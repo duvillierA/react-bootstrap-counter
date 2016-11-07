@@ -4,13 +4,14 @@ export default class CounterInput extends React.Component {
 
 	constructor(props) {
 		super(props);
-		
+		const min = Math.max(this.props.min, 0)
+		const max = this.props.max || -1
+		const value = Math.max(min, this.props.value)
 		this.state = {
-			value: (this.props.value < this.props.min) ? this.props.min : (this.props.value || 0),
-			min: this.props.min || 0,
-			max: this.props.max || -1
+			value,
+			min,
+			max
 		}
-
 	}
 
 	set = (value) => {
@@ -82,11 +83,11 @@ export default class CounterInput extends React.Component {
 		return (
 			<div className="input-group counter-input">
 				<span className="input-group-addon" onClick={() => {this._increase(value)}}>
-					<i className="fa fa-plus" />
+					{this.props.increaseIcon}
 				</span>
 				<input className="form-control" type="text" onChange={this._onChange} value={value} />
 				<span className="input-group-addon" onClick={() => {this._decrease(value)}}>
-					<i className="fa fa-minus"/>
+					{this.props.decreaseIcon}
 				</span>
 			</div>
 		)

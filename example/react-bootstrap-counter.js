@@ -26,74 +26,16 @@ var CounterInput = function (_React$Component) {
 
 		var _this = _possibleConstructorReturn(this, (CounterInput.__proto__ || Object.getPrototypeOf(CounterInput)).call(this, props));
 
-		_this.set = function (value) {
-			_this.setState({
-				value: value
-			});
-			_this.props.onChange(value);
-		};
+		_initialiseProps.call(_this);
 
-		_this._onChange = function (e) {
-			var new_value = e.target.value;
-
-			// check for empty string or invalid values
-			if (new_value === '') {
-				_this.set(_this.state.min); // fallback to min value
-			} else if (new_value > _this.state.max && _this.state.max !== -1 || new_value < _this.state.min) {
-				return; // don't update the value
-			} else if (typeof new_value != 'number') {
-				var parsed = parseInt(new_value, 10); // try to parse the number
-
-				// if parsed is not a number
-				if (isNaN(parsed)) {
-					_this.set(_this.state.min); // fallback to min value
-				} else {
-					// if parsed succesfully update the value
-					_this.set(parsed);
-				}
-			}
-		};
-
-		_this._increase = function (value) {
-			if (value === '') {
-				_this.set(_this.state.min); // fallback to min value
-			} else {
-				var parsed = parseInt(value, 10);
-
-				// if parsed is not a number
-				if (isNaN(parsed)) {
-					_this.set(_this.state.min); // fallback to min value
-				} else {
-					if (value < _this.state.max || _this.state.max == -1) {
-						_this.set(parsed + 1); // increment value
-					}
-				}
-			}
-		};
-
-		_this._decrease = function (value) {
-			if (value === '') {
-				_this.set(_this.state.min); // fallback to min value
-			} else {
-				var parsed = parseInt(value, 10);
-
-				// if parsed is not a number
-				if (isNaN(parsed)) {
-					_this.set(_this.state.min); // fallback to min value
-				} else {
-					if (value > _this.state.min) {
-						_this.set(parsed - 1); // increment value
-					}
-				}
-			}
-		};
-
+		var min = Math.max(_this.props.min, 0);
+		var max = _this.props.max || -1;
+		var value = Math.max(min, _this.props.value);
 		_this.state = {
-			value: _this.props.value < _this.props.min ? _this.props.min : _this.props.value || 0,
-			min: _this.props.min || 0,
-			max: _this.props.max || -1
+			value: value,
+			min: min,
+			max: max
 		};
-
 		return _this;
 	}
 
@@ -113,7 +55,7 @@ var CounterInput = function (_React$Component) {
 					{ className: 'input-group-addon', onClick: function onClick() {
 							_this2._increase(value);
 						} },
-					_react2.default.createElement('i', { className: 'fa fa-plus' })
+					this.props.increaseIcon
 				),
 				_react2.default.createElement('input', { className: 'form-control', type: 'text', onChange: this._onChange, value: value }),
 				_react2.default.createElement(
@@ -121,7 +63,7 @@ var CounterInput = function (_React$Component) {
 					{ className: 'input-group-addon', onClick: function onClick() {
 							_this2._decrease(value);
 						} },
-					_react2.default.createElement('i', { className: 'fa fa-minus' })
+					this.props.decreaseIcon
 				)
 			);
 		}
@@ -129,5 +71,71 @@ var CounterInput = function (_React$Component) {
 
 	return CounterInput;
 }(_react2.default.Component);
+
+var _initialiseProps = function _initialiseProps() {
+	var _this3 = this;
+
+	this.set = function (value) {
+		_this3.setState({
+			value: value
+		});
+		_this3.props.onChange(value);
+	};
+
+	this._onChange = function (e) {
+		var new_value = e.target.value;
+
+		// check for empty string or invalid values
+		if (new_value === '') {
+			_this3.set(_this3.state.min); // fallback to min value
+		} else if (new_value > _this3.state.max && _this3.state.max !== -1 || new_value < _this3.state.min) {
+			return; // don't update the value
+		} else if (typeof new_value != 'number') {
+			var parsed = parseInt(new_value, 10); // try to parse the number
+
+			// if parsed is not a number
+			if (isNaN(parsed)) {
+				_this3.set(_this3.state.min); // fallback to min value
+			} else {
+				// if parsed succesfully update the value
+				_this3.set(parsed);
+			}
+		}
+	};
+
+	this._increase = function (value) {
+		if (value === '') {
+			_this3.set(_this3.state.min); // fallback to min value
+		} else {
+			var parsed = parseInt(value, 10);
+
+			// if parsed is not a number
+			if (isNaN(parsed)) {
+				_this3.set(_this3.state.min); // fallback to min value
+			} else {
+				if (value < _this3.state.max || _this3.state.max == -1) {
+					_this3.set(parsed + 1); // increment value
+				}
+			}
+		}
+	};
+
+	this._decrease = function (value) {
+		if (value === '') {
+			_this3.set(_this3.state.min); // fallback to min value
+		} else {
+			var parsed = parseInt(value, 10);
+
+			// if parsed is not a number
+			if (isNaN(parsed)) {
+				_this3.set(_this3.state.min); // fallback to min value
+			} else {
+				if (value > _this3.state.min) {
+					_this3.set(parsed - 1); // increment value
+				}
+			}
+		}
+	};
+};
 
 exports.default = CounterInput;
